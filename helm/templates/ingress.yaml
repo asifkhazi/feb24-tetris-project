@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.deployment.name }}-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/target-port: '{{ .Values.service.clusterIPPort }}'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.acmCertificateARN }}
+spec:
+  ingressClassName: alb
+  rules:
+  - host: {{ .Values.environment.path }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.deployment.name }}-svc
+            port: 
+              number: {{ .Values.service.clusterIPPort }}
