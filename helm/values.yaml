@@ -1,0 +1,22 @@
+deployment:
+  name: feb24-tetris-project
+  replicaCount: 1
+image:
+  repository: 227219889473.dkr.ecr.ap-south-1.amazonaws.com
+  tag: 1
+  containerPort: 3000
+service:
+  type: ClusterIP
+  clusterIPPort: 3000
+resource:
+  cpu:
+    requests: 0.1
+    limit: 0.2
+  memory:
+    requests: 200Mi
+    limit: 300Mi
+environment:
+  env: DEV
+  path: dev-tetris.artisantek.in
+namespace: dev
+acmCertificateARN: arn:aws:acm:ap-south-1:227219889473:certificate/a83adc9c-27d3-4a95-af4a-3c16ecb22616
